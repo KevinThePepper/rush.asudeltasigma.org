@@ -1,9 +1,9 @@
-import React, { FC, ReactNode, useState } from "react";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Button, Layout, Menu, Result } from "antd";
+import { Layout, Menu } from "antd";
 import {
   CalendarOutlined,
   ProfileOutlined,
@@ -15,53 +15,29 @@ import { UserContext } from "../../interfaces";
 import { RootState } from "../../state/rootReducer";
 import LoadingSpinner from "../Loading/Loading";
 import ProfileIcon from "./ProfileIcon/ProfileIcon";
+import ErrorResult from "./ErrorResult/ErrorResult";
 
 import "antd/dist/antd.css";
 import "./Layout.module.scss";
 
 const { Header, Sider, Content } = Layout;
 
-type ErrorProps = {
-  errors?: string;
+type Props = {
+  title?: string
+  children?: ReactNode
+  loading?: boolean
+  loadingText?: string
+  errors?: string
+  authRequired?: boolean
 };
 
-const Error: FC<ErrorProps> = ({ errors }) => (
-  <Result
-    status="error"
-    title="Submission Failed"
-    subTitle={errors}
-    extra={[
-      <Link href="/">
-        <Button type="primary" key="homeButton" href="/">
-          Go Home
-        </Button>
-      </Link>,
-      <Button
-        type="default"
-        key="supportButton"
-        href="mailto:help@asudeltasigma.org"
-        target="_blank"
-      >
-        Contact Support
-      </Button>,
-    ]}
-  ></Result>
-);
-
-type MainProps = {
-  title?: string;
-  children?: ReactNode;
-  loading?: boolean;
-  loadingText?: string;
-  errors?: string;
-};
-
-const Main: FC<MainProps> = ({
+const Main: FC<Props> = ({
   children,
   title = "Rush",
   loading = false,
   loadingText,
   errors,
+  authRequired = false
 }) => {
   const [collapsed, setCollapsed] = useState(true);
   const [selectedKey, setSelectedKey] = useState("home");
@@ -74,8 +50,14 @@ const Main: FC<MainProps> = ({
   const userContext: UserContext = useSelector(
     (state: RootState) => state.userContext
   );
-  const initial = userContext.user.name.charAt(0);
-  console.log(initial)
+
+  const isAuthenticated = userContext.authenticated;
+  useEffect(() => {
+    if (!isAuthenticated && authRequired) {
+      const next = router.pathname;
+      router.push("/login", `/login?next=${next}`, { shallow: true })
+  }}, []);
+
   const pageLoading = useSelector((state: RootState) => state.siteContext.loading);
 
   const titleConcat = title + " | ASU Delta Sigma";
@@ -118,12 +100,16 @@ const Main: FC<MainProps> = ({
         </Header>
         <Content className="site-layout-background">
           {errors ? (
-            <Error errors={errors} />
+            <ErrorResult errors={errors} />
           ) : (
-            <LoadingSpinner loading={loading || pageLoading} text={loadingText}>
-              {children}
-            </LoadingSpinner>
-          )}
+            (isAuthenticated || !authRequired) ? (
+              <LoadingSpinner loading={loading || pageLoading} text={loadingText}>
+                {children}
+              </LoadingSpinner>
+            ) : (
+              <LoadingSpinner loading={true} text="Redirecting to login"></LoadingSpinner>
+            )
+            )}
         </Content>
       </Layout>
     </Layout>

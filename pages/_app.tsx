@@ -5,13 +5,11 @@ import { Provider } from "react-redux";
 import store from "../state/rootReducer";
 import { stopLoading, startLoading } from "../state/siteContextReducer";
 
-import "../styles/antd.less";
+import "../assets/styles/antd.less";
 
 const IndexPage = ({ Component, pageProps }: AppProps) => {
-  console.log(process.env)
-  // router binding events
   useEffect(() => {
-    console.log("It's happening")
+    // router binding events
     Router.events.on("routeChangeStart", () => store.dispatch(startLoading()));
     Router.events.on("routeChangeComplete", () => store.dispatch(stopLoading()));
   });

@@ -7,7 +7,7 @@ import MaintenanceAlert from "../components/Maintenance/MaintenanceAlert";
 
 const CalendarPage: FC = () => {
   return (
-    <Layout title="Calendar">
+    <Layout title="Calendar" authRequired>
       <h1>Calendar</h1>
       <MaintenanceAlert />
       <Calendar />

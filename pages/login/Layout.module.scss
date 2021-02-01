@@ -1,0 +1,31 @@
+@import "../../assets/styles/colors.scss";
+@import "../../assets/styles/variables.scss";
+
+.login-form {
+    margin: 200px 0;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+
+    @media (max-width: $breakpoint-tablet) {
+        width: 50%;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+        width: 100%;
+    }
+}
+
+.spaced {
+    margin-bottom: 20px;
+}
+
+.ant-card-head {
+    background-color: $primary-color;
+    color: #e2e2e2;
+}
+
+.ant-btn {
+    float: right;
+}

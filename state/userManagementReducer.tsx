@@ -8,11 +8,11 @@ type initialStateType = {
 }
 
 const initialState: initialStateType = {
-    users: process.env.USE_MOCK_DATA === "true" ? [] : mockUserManagement
+    users: process.env.USE_MOCK_DATA === "true" ? mockUserManagement : []
 }
 
 const userManagementSlice = createSlice({
-    name: "userContext",
+    name: "userManagement",
     initialState: initialState,
     reducers: {
         tempReducer: (state, action) => {

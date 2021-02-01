@@ -11,16 +11,15 @@ type Props = {
 };
 
 const ProfileIcon: FC<Props> = ({ userContext }) => {
-    console.log(userContext)
     const initial = String(userContext.user.name.charAt(0));
     const menu = (
     <Menu>
-        <Menu.Item icon={<UserOutlined />} >
+        <Menu.Item key="viewProfile" icon={<UserOutlined />} >
             <Link href={{ pathname: "/users/[id]", query: { id: userContext.userId } }}>
                 View Profile
             </Link>
         </Menu.Item>
-        <Menu.Item key="/settings" icon={<SettingOutlined />}>
+        <Menu.Item key="settings" icon={<SettingOutlined />}>
             <Link href="/settings">Settings</Link>
           </Menu.Item>
     </Menu>
