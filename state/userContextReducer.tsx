@@ -14,7 +14,7 @@ const initialState: UserContext = {
 
 const userContextSlice = createSlice({
     name: "userContext",
-    initialState: process.env.USE_MOCK_DATA === "true" ? mockUserContext : initialState,
+    initialState: process.env.USE_MOCK_DATA === "true" ? initialState : mockUserContext,
     reducers: {
         // retrieves user information
         getContext: (state, action) => {

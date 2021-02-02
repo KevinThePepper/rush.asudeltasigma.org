@@ -61,7 +61,7 @@ const columns = [
       }
     ],
     onFilter: (value: boolean, record: User) => record.preferenced === value
-  },
+  }
 ];
 
 const List: FC = () => {
